@@ -24,12 +24,13 @@ class _FeedListState extends State<FeedList> {
                   onTap: () {
                     setState(() {
                       widget.feed.articleList[i] = FeedArticle(
-                          widget.feed.articleList[i].title,
-                          widget.feed.articleList[i].url,
-                          widget.feed.articleList[i].publishedDate,
-                          widget.feed.articleList[i].blogName,
-                          widget.feed.articleList[i].alreadyRead,
-                          true);
+                        widget.feed.articleList[i].title,
+                        widget.feed.articleList[i].url,
+                        widget.feed.articleList[i].publishedDate,
+                        widget.feed.articleList[i].blogName,
+                        true,
+                        widget.feed.articleList[i].bookmarked,
+                      );
                       FeedRepository.save(widget.feed.articleList[i]);
                     });
                     Navigator.push(
