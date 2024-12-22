@@ -87,14 +87,14 @@ class FeedRepository {
   }
 
   static Future<Feed> getFeed() async {
-    Feed feed = await FeedRepository.getFeedFromSite();
+    Feed feed = await FeedRepository.fetchFeedFromSite();
 
     // 永続化
     FeedRepository.insertFeed(feed);
     return await FeedRepository.selectAll();
   }
 
-  static Future<Feed> getFeedsOrderedByDate() async {
+  Future<Feed> fetchFeed() async {
     var feed = await getFeed();
     // 副作用
     feed.articleList
@@ -102,23 +102,31 @@ class FeedRepository {
     return feed;
   }
 
-  static Future<Feed> getFeedFromSite() async {
-    List<FeedArticle> feedArticles = [];
+  static Future<Feed> getFeedOrderedByDate() async {
+    var feed = await getFeed();
+    // 副作用
+    feed.articleList
+        .sort((a, b) => b.publishedDate!.compareTo(a.publishedDate!));
+    return feed;
+  }
+
+  static Future<Feed> fetchFeedFromSite() async {
+    List<List<FeedArticle>> feedArticles = [];
     await Future.forEach(Sites, (site) async {
       if (site["feedType"]! == "rss") {
-        await _getArticleFromSite(site["url"]!, FeedType.rss).then((value) {
-          feedArticles.add(value as FeedArticle);
+        await _fetchArticleFromSite(site["url"]!, FeedType.rss).then((value) {
+          feedArticles.add(value);
         });
       } else {
-        await _getArticleFromSite(site["url"]!, FeedType.atom).then((value) {
-          feedArticles.add(value as FeedArticle);
+        await _fetchArticleFromSite(site["url"]!, FeedType.atom).then((value) {
+          feedArticles.add(value);
         });
       }
     });
-    return Feed(articleList: feedArticles);
+    return Feed(articleList: feedArticles.expand((v) => v).toList());
   }
 
-  static Future<List<FeedArticle>> _getArticleFromSite(
+  static Future<List<FeedArticle>> _fetchArticleFromSite(
       String url, FeedType type) async {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode != 200) {
