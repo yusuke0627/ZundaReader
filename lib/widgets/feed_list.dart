@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:zunda_reader/models/feed_repository.dart';
 
-import '../models/feed.dart';
 import '../screens/feedView.dart';
 
 class FeedList extends StatefulWidget {
-  List<Feed> feeds;
-  FeedList(this.feeds, {super.key});
+  final Feed feed;
+  const FeedList(this.feed, {super.key});
 
   @override
   State<FeedList> createState() => _FeedListState();
@@ -18,48 +17,28 @@ class _FeedListState extends State<FeedList> {
   Widget build(BuildContext context) {
     debugPrint("Called: FeedList.build");
     return ListView.builder(
-        itemCount: widget.feeds.length,
-        itemBuilder: (context, i) => Slidable(
-            key: UniqueKey(),
-            startActionPane: ActionPane(
-              motion: const ScrollMotion(),
-              children: [
-                SlidableAction(
-                  onPressed: (_) {
-                    setState(() {
-                      if (widget.feeds[i].bookmarked) {
-                        widget.feeds[i] =
-                            widget.feeds[i].copyWith(bookmarked: false);
-                        Feed.save(widget.feeds[i]);
-                      } else {
-                        widget.feeds[i] =
-                            widget.feeds[i].copyWith(bookmarked: true);
-                        Feed.save(widget.feeds[i]);
-                      }
-                    });
-                  },
-                  backgroundColor: widget.feeds[i].bookmarked
-                      ? Colors.grey
-                      : Theme.of(context).primaryColor,
-                  icon: Icons.bookmark,
-                  label: 'Bookmark',
-                )
-              ],
-            ),
-            child: Container(
+        itemCount: widget.feed.articleList.length,
+        itemBuilder: (context, i) => Container(
               padding: const EdgeInsets.only(top: 5, bottom: 5),
               child: ListTile(
                   onTap: () {
                     setState(() {
-                      widget.feeds[i] =
-                          widget.feeds[i].copyWith(alreadyRead: true);
-                      Feed.save(widget.feeds[i]);
+                      widget.feed.articleList[i] = FeedArticle(
+                        widget.feed.articleList[i].title,
+                        widget.feed.articleList[i].url,
+                        widget.feed.articleList[i].publishedDate,
+                        widget.feed.articleList[i].blogName,
+                        true,
+                        widget.feed.articleList[i].bookmarked,
+                      );
+                      FeedRepository.save(widget.feed.articleList[i]);
                     });
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (BuildContext context) => SafeArea(
-                                child: FeedView(url: widget.feeds[i].url))));
+                                child: FeedView(
+                                    url: widget.feed.articleList[i].url!))));
                   },
                   title: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,10 +46,10 @@ class _FeedListState extends State<FeedList> {
                       SizedBox(
                           height: 40.0,
                           child: Text(
-                            widget.feeds[i].title,
+                            widget.feed.articleList[i].title!,
                             style: TextStyle(
                                 fontSize: 14,
-                                color: widget.feeds[i].alreadyRead
+                                color: widget.feed.articleList[i].alreadyRead
                                     ? Colors.grey
                                     : Colors.black),
                           )),
@@ -79,7 +58,7 @@ class _FeedListState extends State<FeedList> {
                           alignment: Alignment.bottomLeft,
                           child: Row(
                             children: [
-                              widget.feeds[i].bookmarked
+                              widget.feed.articleList[i].bookmarked
                                   ? RichText(
                                       text: TextSpan(children: [
                                       WidgetSpan(
@@ -95,28 +74,30 @@ class _FeedListState extends State<FeedList> {
                                           child:
                                               Icon(Icons.bookmark_add_outlined))
                                     ])),
-                              Text(widget.feeds[i].blogName,
+                              Text(widget.feed.articleList[i].blogName!,
                                   style: TextStyle(
                                       fontSize: 10.0,
-                                      color: widget.feeds[i].alreadyRead
-                                          ? Colors.grey
-                                          : Colors.black)),
+                                      color:
+                                          widget.feed.articleList[i].alreadyRead
+                                              ? Colors.grey
+                                              : Colors.black)),
                               const SizedBox(
                                 width: 10.0,
                               ),
                               Text(
-                                DateFormat('yyyy/MM/dd(E) HH:mm')
-                                    .format(widget.feeds[i].publishedDate),
+                                DateFormat('yyyy/MM/dd(E) HH:mm').format(
+                                    widget.feed.articleList[i].publishedDate!),
                                 style: TextStyle(
                                     fontSize: 10.0,
-                                    color: widget.feeds[i].alreadyRead
-                                        ? Colors.grey
-                                        : Colors.black),
+                                    color:
+                                        widget.feed.articleList[i].alreadyRead
+                                            ? Colors.grey
+                                            : Colors.black),
                               )
                             ],
                           )),
                     ],
                   )),
-            )));
+            ));
   }
 }

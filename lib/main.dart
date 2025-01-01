@@ -1,10 +1,6 @@
-import 'package:zunda_reader/screens/HomeScreen.dart';
-// import 'package:zu';
-
-import 'package:zunda_reader/screens/bookmarkScreen.dart';
-import 'package:zunda_reader/notifiers/feeds_notifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zunda_reader/screens/HomeScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +28,12 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  static const _screens = [HomeScreen(), BookmarkScreen()];
+  static const _screens = [
+    HomeScreen(),
+    // BookmarkScreen(
+    //   feed: null,
+    // )
+  ];
 
   int _selectedIndex = 0;
 
@@ -56,6 +57,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               onTap: _onItemTapped,
               items: const <BottomNavigationBarItem>[
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                // ToDo implement later
                 BottomNavigationBarItem(
                     icon: Icon(Icons.bookmark), label: 'Bookmark'),
               ],

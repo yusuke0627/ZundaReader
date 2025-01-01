@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../models/feed.dart';
+import '../providers/feed_provider.dart';
 import '../widgets/feed_list.dart';
 
-class BookmarkScreen extends StatefulWidget {
+class BookmarkScreen extends ConsumerStatefulWidget {
   const BookmarkScreen({super.key});
 
   @override
-  State<BookmarkScreen> createState() => _BookmarkScreenState();
+  ConsumerState createState() => HomeScreenState();
 }
 
-class _BookmarkScreenState extends State<BookmarkScreen> {
-  List<Feed> feeds = [];
-
-  _BookmarkScreenState() {
-    loadFeeds();
-  }
-
-  void loadFeeds() async {
-    await Feed.selectAll().then((value) => setState(() {
-          feeds = value;
-        }));
+class HomeScreenState extends ConsumerState<BookmarkScreen> {
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    debugPrint("Called BookmarkedScreenState.build");
     return Scaffold(
-        appBar: AppBar(title: const Text('Feedable')),
-        body: FeedList(feeds.where((element) => element.bookmarked).toList()));
+        body: ref.watch(feedProvider).when(
+            data: ((feed) {
+              return RefreshIndicator(
+                  onRefresh: () => ref.refresh(feedProvider.future),
+                  child: FeedList(feed));
+            }),
+            loading: () => const Center(child: CircularProgressIndicator()),
+            error: (error, _) => Text(error.toString())));
   }
 }
