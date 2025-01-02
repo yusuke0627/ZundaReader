@@ -1,13 +1,11 @@
-import 'dart:convert';
-
-import 'package:zunda_reader/data/data.dart';
-import 'package:zunda_reader/util/feeds_database.dart';
-import 'package:path/path.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:webfeed_plus/webfeed_plus.dart';
+import 'package:zunda_reader/data/data.dart';
+import 'package:zunda_reader/util/feeds_database.dart';
 
-import 'package:freezed_annotation/freezed_annotation.dart';
 part 'feed.freezed.dart';
 
 enum FeedType {

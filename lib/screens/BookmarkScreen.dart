@@ -21,10 +21,10 @@ class HomeScreenState extends ConsumerState<BookmarkScreen> {
   Widget build(BuildContext context) {
     debugPrint("Called BookmarkedScreenState.build");
     return Scaffold(
-        body: ref.watch(feedProvider).when(
+        body: ref.watch(bookmarkedFeedProvider).when(
             data: ((feed) {
               return RefreshIndicator(
-                  onRefresh: () => ref.refresh(feedProvider.future),
+                  onRefresh: () => ref.refresh(bookmarkedFeedProvider.future),
                   child: FeedList(feed));
             }),
             loading: () => const Center(child: CircularProgressIndicator()),

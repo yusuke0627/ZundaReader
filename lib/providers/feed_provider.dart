@@ -7,5 +7,10 @@ part 'feed_provider.g.dart';
 
 @riverpod
 Future<Feed> feed(Ref ref) async {
-  return await FeedRepository.getFeed();
+  return await FeedRepository.getFeedOrderedByDate();
+}
+
+@riverpod
+Future<Feed> bookmarkedFeed(Ref ref) async {
+  return await FeedRepository.selectBookmarkedFeed();
 }
