@@ -12,7 +12,7 @@ part of 'feed.dart';
 T _$identity<T>(T value) => value;
 
 final _privateConstructorUsedError = UnsupportedError(
-    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
+    'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
 /// @nodoc
 mixin _$Feed {
@@ -23,7 +23,9 @@ mixin _$Feed {
   bool get bookmarked => throw _privateConstructorUsedError;
   bool get alreadyRead => throw _privateConstructorUsedError;
 
-  @JsonKey(ignore: true)
+  /// Create a copy of Feed
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   $FeedCopyWith<Feed> get copyWith => throw _privateConstructorUsedError;
 }
 
@@ -51,6 +53,8 @@ class _$FeedCopyWithImpl<$Res, $Val extends Feed>
   // ignore: unused_field
   final $Res Function($Val) _then;
 
+  /// Create a copy of Feed
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -91,9 +95,10 @@ class _$FeedCopyWithImpl<$Res, $Val extends Feed>
 }
 
 /// @nodoc
-abstract class _$$_FeedCopyWith<$Res> implements $FeedCopyWith<$Res> {
-  factory _$$_FeedCopyWith(_$_Feed value, $Res Function(_$_Feed) then) =
-      __$$_FeedCopyWithImpl<$Res>;
+abstract class _$$FeedImplCopyWith<$Res> implements $FeedCopyWith<$Res> {
+  factory _$$FeedImplCopyWith(
+          _$FeedImpl value, $Res Function(_$FeedImpl) then) =
+      __$$FeedImplCopyWithImpl<$Res>;
   @override
   @useResult
   $Res call(
@@ -106,11 +111,14 @@ abstract class _$$_FeedCopyWith<$Res> implements $FeedCopyWith<$Res> {
 }
 
 /// @nodoc
-class __$$_FeedCopyWithImpl<$Res> extends _$FeedCopyWithImpl<$Res, _$_Feed>
-    implements _$$_FeedCopyWith<$Res> {
-  __$$_FeedCopyWithImpl(_$_Feed _value, $Res Function(_$_Feed) _then)
+class __$$FeedImplCopyWithImpl<$Res>
+    extends _$FeedCopyWithImpl<$Res, _$FeedImpl>
+    implements _$$FeedImplCopyWith<$Res> {
+  __$$FeedImplCopyWithImpl(_$FeedImpl _value, $Res Function(_$FeedImpl) _then)
       : super(_value, _then);
 
+  /// Create a copy of Feed
+  /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
   $Res call({
@@ -121,7 +129,7 @@ class __$$_FeedCopyWithImpl<$Res> extends _$FeedCopyWithImpl<$Res, _$_Feed>
     Object? bookmarked = null,
     Object? alreadyRead = null,
   }) {
-    return _then(_$_Feed(
+    return _then(_$FeedImpl(
       null == title
           ? _value.title
           : title // ignore: cast_nullable_to_non_nullable
@@ -152,8 +160,8 @@ class __$$_FeedCopyWithImpl<$Res> extends _$FeedCopyWithImpl<$Res, _$_Feed>
 
 /// @nodoc
 
-class _$_Feed implements _Feed {
-  const _$_Feed(this.title, this.url, this.publishedDate, this.blogName,
+class _$FeedImpl implements _Feed {
+  const _$FeedImpl(this.title, this.url, this.publishedDate, this.blogName,
       this.bookmarked, this.alreadyRead);
 
   @override
@@ -174,11 +182,34 @@ class _$_Feed implements _Feed {
     return 'Feed(title: $title, url: $url, publishedDate: $publishedDate, blogName: $blogName, bookmarked: $bookmarked, alreadyRead: $alreadyRead)';
   }
 
-  @JsonKey(ignore: true)
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$FeedImpl &&
+            (identical(other.title, title) || other.title == title) &&
+            (identical(other.url, url) || other.url == url) &&
+            (identical(other.publishedDate, publishedDate) ||
+                other.publishedDate == publishedDate) &&
+            (identical(other.blogName, blogName) ||
+                other.blogName == blogName) &&
+            (identical(other.bookmarked, bookmarked) ||
+                other.bookmarked == bookmarked) &&
+            (identical(other.alreadyRead, alreadyRead) ||
+                other.alreadyRead == alreadyRead));
+  }
+
+  @override
+  int get hashCode => Object.hash(runtimeType, title, url, publishedDate,
+      blogName, bookmarked, alreadyRead);
+
+  /// Create a copy of Feed
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   @pragma('vm:prefer-inline')
-  _$$_FeedCopyWith<_$_Feed> get copyWith =>
-      __$$_FeedCopyWithImpl<_$_Feed>(this, _$identity);
+  _$$FeedImplCopyWith<_$FeedImpl> get copyWith =>
+      __$$FeedImplCopyWithImpl<_$FeedImpl>(this, _$identity);
 }
 
 abstract class _Feed implements Feed {
@@ -188,7 +219,7 @@ abstract class _Feed implements Feed {
       final DateTime publishedDate,
       final String blogName,
       final bool bookmarked,
-      final bool alreadyRead) = _$_Feed;
+      final bool alreadyRead) = _$FeedImpl;
 
   @override
   String get title;
@@ -202,7 +233,11 @@ abstract class _Feed implements Feed {
   bool get bookmarked;
   @override
   bool get alreadyRead;
+
+  /// Create a copy of Feed
+  /// with the given fields replaced by the non-null parameter values.
   @override
-  @JsonKey(ignore: true)
-  _$$_FeedCopyWith<_$_Feed> get copyWith => throw _privateConstructorUsedError;
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$FeedImplCopyWith<_$FeedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

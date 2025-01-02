@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:zunda_reader/screens/BookmarkScreen.dart';
 import 'package:zunda_reader/screens/HomeScreen.dart';
 
 void main() async {
@@ -28,12 +29,7 @@ class MyStatefulWidget extends StatefulWidget {
 }
 
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  static const _screens = [
-    HomeScreen(),
-    // BookmarkScreen(
-    //   feed: null,
-    // )
-  ];
+  static const _screens = [HomeScreen(), BookmarkScreen()];
 
   int _selectedIndex = 0;
 

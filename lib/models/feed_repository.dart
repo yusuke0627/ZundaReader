@@ -86,7 +86,7 @@ class FeedRepository {
     }));
   }
 
-  static Future<Feed> selectBookmarkedArticle() async {
+  static Future<Feed> selectBookmarkedFeed() async {
     final Database db = await FeedableDatabase.database;
     final List<Map<String, dynamic>> maps =
         await db.query('feeds', where: 'bookmarked = ?', whereArgs: [true]);
@@ -109,14 +109,6 @@ class FeedRepository {
     // 永続化
     FeedRepository.insertFeed(feed);
     return await FeedRepository.selectAll();
-  }
-
-  Future<Feed> fetchFeed() async {
-    var feed = await getFeed();
-    // 副作用
-    feed.articleList
-        .sort((a, b) => b.publishedDate!.compareTo(a.publishedDate!));
-    return feed;
   }
 
   static Future<Feed> getFeedOrderedByDate() async {
